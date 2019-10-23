@@ -1,21 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Controls from './controls/controls';
 import Counter from './counter/Counter';
 import Publication from './publication/Publication';
 import styles from './reader.module.css';
+import publications from '../publications.json';
 
 export default class Reader extends Component {
-  static propTypes = {
-    publications: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-      }).isRequired,
-    ).isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -23,31 +13,24 @@ export default class Reader extends Component {
     };
   }
 
-  handleClickPrevious = () => {
-    this.setState(prevState =>
-      prevState.activePage > 1
-        ? { activePage: prevState.activePage - 1 }
-        : { activePage: prevState.activePage },
-    );
-  };
-
-  handleClickNext = () => {
-    const { publications } = this.props;
-    this.setState(prevState =>
-      prevState.activePage < publications.length
-        ? { activePage: prevState.activePage + 1 }
-        : { activePage: prevState.activePage },
-    );
+  handleClick = e => {
+    const { activePage } = this.state;
+    const btnName = e.target.name;
+    if (btnName === 'Вперед') {
+      if (activePage < publications.length) {
+        this.setState(state => ({ activePage: state.activePage + 1 }));
+      }
+    } else if (activePage > 1) {
+      this.setState(state => ({ activePage: state.activePage - 1 }));
+    }
   };
 
   render() {
     const { activePage } = this.state;
-    const { publications } = this.props;
     return (
       <div className={styles.reader}>
         <Controls
-          onClickLeft={this.handleClickPrevious}
-          onClickRight={this.handleClickNext}
+          onClick={this.handleClick}
           currentPage={activePage}
           length={publications.length}
         />

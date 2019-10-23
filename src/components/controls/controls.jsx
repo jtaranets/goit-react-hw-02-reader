@@ -2,21 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './controls.module.css';
 
-const Controls = ({ onClickLeft, onClickRight, currentPage, length }) => {
+const Controls = ({ onClick, currentPage, length }) => {
   return (
     <section className={styles.controls}>
       <button
+        name="Назад"
         className={styles.button}
         disabled={currentPage === 1}
-        onClick={onClickLeft}
+        onClick={e => onClick(e)}
         type="button"
       >
         Назад
       </button>
       <button
+        name="Вперед"
         className={styles.button}
         disabled={currentPage === length}
-        onClick={onClickRight}
+        onClick={e => onClick(e)}
         type="button"
       >
         Вперед
@@ -26,8 +28,7 @@ const Controls = ({ onClickLeft, onClickRight, currentPage, length }) => {
 };
 
 Controls.propTypes = {
-  onClickLeft: PropTypes.func.isRequired,
-  onClickRight: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   length: PropTypes.number.isRequired,
 };
